@@ -45,7 +45,7 @@ const ProductCard = ({ data }) => {
           className="mt-10 h-[300px] object-contain"
         />
         <div className="mt-6 px-2 text-left">
-          <h1 className="text-3xl font-semibold">{name}</h1>
+          <h1 className="text-3xl font-semibold capitalize">{name}</h1>
           <div className="flex justify-between items-center mt-5 mb-3">
             <h1 className="text-4xl font-semibold">${price}</h1>
             <button className="btn btn-outline px-8">

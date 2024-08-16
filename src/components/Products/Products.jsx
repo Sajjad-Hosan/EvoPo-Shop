@@ -4,8 +4,10 @@ import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import { IoMdSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const Products = ({ count }) => {
+  const { setProducts } = useAuth();
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
@@ -21,8 +23,9 @@ const Products = ({ count }) => {
       )
       .then((res) => {
         setData(res?.data);
+        setProducts(res?.data);
       });
-  }, [axiosSecure, page, search, category, sort]);
+  }, [axiosSecure, page, search, category, sort, setProducts]);
   return (
     <div className="mt-16 text-center max-w-screen-xl mx-auto">
       <h1 className="text-5xl font-semibold">Our Products</h1>
