@@ -5,8 +5,8 @@ import {
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import CartBtn from "../CartBtn/CartBtn";
 import Profile from "../Profile/Profile";
+import CartDawer from "../CartDawer/CartDawer";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -22,8 +22,8 @@ const Navbar = () => {
         <div className="navbar-end space-x-3">
           {user ? (
             <>
-              <CartBtn />
-              <Profile/>
+              <CartDawer />
+              <Profile />
             </>
           ) : (
             <>
