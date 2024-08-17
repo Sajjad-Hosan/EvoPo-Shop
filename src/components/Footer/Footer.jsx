@@ -1,7 +1,11 @@
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
 import logo from "../../../public/log.png";
+import toast from "react-hot-toast";
 
 const Footer = () => {
+  const handleWorking = () => {
+    toast.error("Working on it!");
+  };
   return (
     <>
       <footer className="footer text-base-content px-6 py-5 mt-20 border-t-2 border-gray-400">
@@ -16,13 +20,13 @@ const Footer = () => {
         </aside>
         <nav className="md:place-self-center md:justify-self-end">
           <div className="grid grid-flow-col gap-4">
-            <a className="btn btn-ghost ">
+            <a className="btn btn-ghost " onClick={handleWorking}>
               <FaFacebook className="text-lg" /> Facebook
             </a>
-            <a className="btn btn-ghost ">
+            <a className="btn btn-ghost " onClick={handleWorking}>
               <FaXTwitter className="text-lg" /> XTwitter
             </a>
-            <a className="btn btn-ghost ">
+            <a className="btn btn-ghost " onClick={handleWorking}>
               <FaInstagram className="text-lg" /> Instagram
             </a>
           </div>

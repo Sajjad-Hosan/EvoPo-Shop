@@ -31,7 +31,7 @@ const Navbar = () => {
               <Link className="btn btn-outline px-8" to="/login">
                 <FaPersonWalkingArrowRight className="text-lg" /> Login
               </Link>
-              <Link className="btn btn-outline px-8" to="/register">
+              <Link className="btn btn-neutral px-8" to="/register">
                 <FaPersonWalkingDashedLineArrowRight className="text-lg" />{" "}
                 Register
               </Link>

@@ -66,10 +66,11 @@ const CartDawer = () => {
           ></label>
           <div className="p-5 h-full w-96 bg-base-100 card overflow-hidden">
             <h2 className="text-4xl">My Products</h2>
-            <div className="grid grid-cols-2 gap-2 mt-7 overflow-scroll">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, i) => (
+            <div className="grid gap-2 mt-7 overflow-scroll text-center">
+              {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, i) => (
                 <DrawerCard key={i} data={item} />
-              ))}
+              ))} */}
+              <h1 className="text-3xl">Working On it</h1>
             </div>
           </div>
         </div>

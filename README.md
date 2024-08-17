@@ -1,6 +1,6 @@
 # EvoPo Shop
 
-This is a fully functional singal page web page that allows users to browse products across various categories, perform searches, and sort products by different criteria. The application features authentication, private routes, and a user-friendly interface.
+This is a fully functional single page website that allows users to browse products across various categories, perform searches, and sort products by different criteria. The application features authentication, private routes, and a user-friendly interface.
 
 ## Features
 
@@ -16,6 +16,10 @@ This is a fully functional singal page web page that allows users to browse prod
 
 ### User Authentication
 - **Sign Up / Login**: Secure user authentication with JWT.
+- **Popup Login**: 
+    - Google 
+    - Facebook (working)
+    - Twitter (working)
 - **Private Routes**: Restrict access to certain pages based on user authentication.
 
 ### User Interface

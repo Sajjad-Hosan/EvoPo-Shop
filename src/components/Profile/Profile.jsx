@@ -1,9 +1,11 @@
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const today = new Date();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { handleUserLogout } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -14,9 +16,9 @@ const Profile = () => {
       logoutDate: today.toLocaleDateString(),
     };
     handleUserLogout().then(() => {
-      axiosSecure.patch("/update?type=logout", userData).then(() => {
-        return toast.success("User Logout");
-      });
+      axiosSecure.patch("/update?type=logout", userData);
+      navigate("/");
+      return toast.success("User Logout");
     });
   };
   return (
@@ -24,10 +26,7 @@ const Profile = () => {
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost avatar px-6">
           <div className="w-8 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
+            <img alt={user?.displayName} src={user?.photoURL} />
           </div>
           Profile
         </div>

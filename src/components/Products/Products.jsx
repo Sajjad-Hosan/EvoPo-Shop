@@ -40,7 +40,7 @@ const Products = ({ count }) => {
           <div className=" join flex flex-row">
             <input
               type="text"
-              placeholder="Write Product Name"
+              placeholder="Product Name"
               id="search-box"
               className="input input-bordered join-item w-80"
               onChange={(e) => setSearch(e.target.value)}
