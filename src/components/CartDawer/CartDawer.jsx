@@ -1,3 +1,36 @@
+import { BiDetail } from "react-icons/bi";
+import { FaTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+const DrawerCard = ({ data }) => {
+  return (
+    <>
+      <div className="card border relative">
+        <img
+          src="https://i.ibb.co/r3Hd2W3/Mountain-Bike.png"
+          alt=""
+          className="w-full object-contain"
+        />
+        <div className="absolute right-2 bottom-2 bg-base-100 p-1">
+          <button
+            className="btn btn-sm btn-ghost btn-circle flex tooltip tooltip-left"
+            data-tip="Remove"
+          >
+            <FaTrashAlt className="text-md" />
+          </button>
+          <Link
+            to={`/details/${"00"}`}
+            className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
+            data-tip="View"
+          >
+            <BiDetail className="text-md" />
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const CartDawer = () => {
   return (
     <>
@@ -31,15 +64,12 @@ const CartDawer = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="p-5 h-full w-96 bg-base-100 card">
-            <h2 className="text-4xl">Your Items</h2>
-            <div className="grid grid-cols-2 gap-2 mt-7">
-                <div className="card border relative">
-                    <img src="https://i.ibb.co/r3Hd2W3/Mountain-Bike.png" alt="" className="w-full object-contain" />
-                </div>
-                <div className="card border">
-                    <img src="https://i.ibb.co/r3Hd2W3/Mountain-Bike.png" alt="" className="w-full object-contain" />
-                </div>
+          <div className="p-5 h-full w-96 bg-base-100 card overflow-hidden">
+            <h2 className="text-4xl">My Products</h2>
+            <div className="grid grid-cols-2 gap-2 mt-7 overflow-scroll">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, i) => (
+                <DrawerCard key={i} data={item} />
+              ))}
             </div>
           </div>
         </div>

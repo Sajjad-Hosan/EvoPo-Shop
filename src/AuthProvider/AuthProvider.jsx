@@ -9,10 +9,13 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import axios from "axios";
 
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
+  const axiosSecure = useAxiosSecure();
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,9 +23,22 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
-      console.log(current);
-      setUser(current);
-      setLoading(false);
+      if (current) {
+        const userData = {
+          email: current?.email,
+        };
+        console.log(current);
+        setUser(current);
+        setLoading(false);
+        //
+        axios
+          .post("http://localhost:3000/jwt", userData, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            console.log("auth res", res);
+          });
+      }
     });
     return () => unSubscribe();
   }, [auth]);
