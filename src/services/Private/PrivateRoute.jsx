@@ -3,7 +3,6 @@ import useAuth from "../../hooks/useAuth";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -11,9 +10,11 @@ const PrivateRoute = ({ children }) => {
       </div>
     );
   }
-  if (!user) {
+  if (user) {
+    return <>{children}</>;
+  } else {
     return <Navigate to="/login" replace={true} />;
-  } else return <>{children}</>;
+  }
 };
 
 export default PrivateRoute;
