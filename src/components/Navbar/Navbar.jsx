@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Profile from "../Profile/Profile";
 import CartDawer from "../CartDawer/CartDawer";
-import logo from '../../../public/log.png'
+import logo from "../../../public/log.png";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -28,10 +28,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link className="btn btn-outline px-8" to="/login">
+              <Link className="btn btn-outline px-5 md:px-8" to="/login">
                 <FaPersonWalkingArrowRight className="text-lg" /> Login
               </Link>
-              <Link className="btn btn-neutral px-8" to="/register">
+              <Link className="btn btn-neutral px-5 md:px-8" to="/register">
                 <FaPersonWalkingDashedLineArrowRight className="text-lg" />{" "}
                 Register
               </Link>
