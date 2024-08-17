@@ -9,13 +9,11 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import useAxiosSecure from "../hooks/useAxiosSecure";
 import axios from "axios";
 
 export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
-  const axiosSecure = useAxiosSecure();
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

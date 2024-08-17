@@ -8,6 +8,7 @@ import Register from "./pages/Register/Register.jsx";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
 import DetailsPage from "./pages/DetailsPage/DetailsPage.jsx";
+import PrivateRouter from "./services/Private/PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +19,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/details/:id",
-    loader: ({ params }) => fetch(`http://localhost:3000/product/${params.id}`,{
-      credentials: 'include'
-    }),
-    element: <DetailsPage />,
+    loader: ({ params }) =>
+      fetch(`http://localhost:3000/product/${params.id}`, {
+        credentials: "include",
+      }),
+    element: (
+      <PrivateRouter>
+        <DetailsPage />
+      </PrivateRouter>
+    ),
   },
   {
     path: "/login",
