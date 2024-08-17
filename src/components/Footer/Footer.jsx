@@ -1,11 +1,12 @@
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import logo from "../../../public/log.png";
 
 const Footer = () => {
   return (
     <>
       <footer className="footer text-base-content px-6 py-5 mt-20 border-t-2 border-gray-400">
         <aside className="grid-flow-col items-center">
-          <img src="/public/log.png" alt="" className="w-12" />{" "}
+          <img src={logo} alt="" className="w-12" />{" "}
           <div>
             <h1 className="text-lg font-semibold">EvoPo Shop</h1>
             {/* <p className="text-sm font-semibold">

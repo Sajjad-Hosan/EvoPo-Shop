@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Profile from "../Profile/Profile";
 import CartDawer from "../CartDawer/CartDawer";
+import logo from '../../../public/log.png'
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -15,7 +16,7 @@ const Navbar = () => {
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <a className="btn btn-ghost text-xl">
-            <img src="/public/log.png" alt="" className="w-10" /> EcoPo Shop
+            <img src={logo} alt="" className="w-10" /> EcoPo Shop
           </a>
         </div>
         <div className="navbar-center"></div>
