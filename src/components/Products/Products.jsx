@@ -2,7 +2,7 @@ import { FaStar } from "react-icons/fa6";
 import ProductCard from "../ProductCard/ProductCard";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import { IoMdSearch } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
@@ -16,16 +16,16 @@ const Products = ({ count }) => {
   const [page, setPage] = useState(0);
   const numberOfPage = Math.ceil(count / 9);
   //
-  useEffect(() => {
-    axiosSecure
-      .post(
-        `/products?page=${page}&item=9&search=${search}&category=${category}&sort=${sort}`
-      )
-      .then((res) => {
-        setData(res?.data);
-        setProducts(res?.data);
-      });
+  const fetchData = useCallback(async () => {
+    const res = await axiosSecure.post(
+      `/products?page=${page}&item=9&search=${search}&category=${category}&sort=${sort}`
+    );
+    setData(res?.data);
+    setProducts(res?.data);
   }, [axiosSecure, page, search, category, sort, setProducts]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   return (
     <div className="mt-16 text-center max-w-screen-xl mx-auto">
       <h1 className="text-5xl font-semibold">Our Products</h1>
@@ -86,7 +86,7 @@ const Products = ({ count }) => {
       <div className="">
         <div className="mt-20 grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {data.map((item, i) => (
-            <ProductCard key={i} data={item} />
+            <ProductCard key={i} data={item} refetch={fetchData} />
           ))}
         </div>
         <div className="flex justify-center items-center w-full mt-16 join">

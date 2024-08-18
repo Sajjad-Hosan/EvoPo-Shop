@@ -9,18 +9,19 @@ import { Toaster } from "react-hot-toast";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
 import DetailsPage from "./pages/DetailsPage/DetailsPage.jsx";
 import PrivateRouter from "./services/Private/PrivateRoute.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
-    loader: () => fetch("https://evo-po-server.vercel.app/product-count"),
+    loader: () => fetch("http://localhost:3000/product-count"),
     errorElement: <div></div>,
   },
   {
     path: "/details/:id",
     loader: ({ params }) =>
-      fetch(`https://evo-po-server.vercel.app/product/${params.id}`, {
+      fetch(`http://localhost:3000/product/${params.id}`, {
         credentials: "include",
       }),
     element: (
@@ -39,11 +40,15 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <Toaster position="top-right" reverseOrder={false} />
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Toaster position="top-right" reverseOrder={false} />
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

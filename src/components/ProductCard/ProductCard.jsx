@@ -1,9 +1,14 @@
 import { BiDetail } from "react-icons/bi";
-import { FaCartShopping, FaRegStar } from "react-icons/fa6";
+import { FaCartShopping, FaRegStar, FaStar } from "react-icons/fa6";
 import { IoShareSocial } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, refetch }) => {
+  const { user } = useAuth();
+  const today = new Date();
+  const axiosSecure = useAxiosSecure();
   const {
     _id,
     name,
@@ -15,16 +20,47 @@ const ProductCard = ({ data }) => {
     creation_date,
     creation_time,
   } = data;
+  const handleFavorite = async (action, item) => {
+    const product = {
+      favo_id: data?._id,
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.displayURL,
+      favorite: action,
+      favorite_date: today.toLocaleDateString(),
+      favorite_time: today.toLocaleTimeString(),
+      item: {
+        ...item,
+        favorite: action,
+      },
+    };
+    // handle favorite action
+    const res = await axiosSecure.post("/favorite-add", product);
+    console.log(res.data);
+    refetch();
+  };
   return (
     <>
       <div className="card justify-between border p-5 relative shadow-xl w-full h-[550px]">
         <div className="absolute top-5 right-4 flex flex-col items-center justify-center gap-2">
-          <button
-            className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
-            data-tip="Favorite"
-          >
-            <FaRegStar className="text-lg" />
-          </button>
+          {data?.favorite ? (
+            <button
+              onClick={() => handleFavorite(false, data)}
+              className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
+              data-tip="unFavorite"
+            >
+              <FaStar className="text-lg" />
+            </button>
+          ) : (
+            <button
+              onClick={() => handleFavorite(true, data)}
+              className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
+              data-tip="Favorite"
+            >
+              <FaRegStar className="text-lg" />
+            </button>
+          )}
+
           <Link
             to={`/details/${_id}`}
             className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
