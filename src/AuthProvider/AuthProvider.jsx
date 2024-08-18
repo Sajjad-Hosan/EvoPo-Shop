@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
         //
         axios
-          .post("https://evo-po-server.vercel.app/jwt", userData, {
+          .post("http://localhost:3000/jwt", userData, {
             withCredentials: true,
           })
           .then((res) => {

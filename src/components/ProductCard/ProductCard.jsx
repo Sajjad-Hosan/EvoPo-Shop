@@ -6,9 +6,10 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
 const ProductCard = ({ data, refetch }) => {
-  const { user } = useAuth();
   const today = new Date();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  console.log(data);
   const {
     _id,
     name,
@@ -38,6 +39,18 @@ const ProductCard = ({ data, refetch }) => {
     const res = await axiosSecure.post("/favorite-add", product);
     console.log(res.data);
     refetch();
+  };
+  const handleAddCart = async (item) => {
+    const cart = {
+      cart_add_date: today.toLocaleDateString(),
+      cart_add_time: today.toLocaleTimeString(),
+      product: {
+        ...item,
+        cart: true,
+      },
+    };
+    const res = await axiosSecure.post("/cart-add", cart);
+    console.log(res);
   };
   return (
     <>
@@ -84,9 +97,23 @@ const ProductCard = ({ data, refetch }) => {
           <h1 className="text-3xl font-semibold capitalize">{name}</h1>
           <div className="flex justify-between items-center mt-5 mb-3">
             <h1 className="text-4xl font-semibold">${price}</h1>
-            <button className="btn btn-outline px-8">
-              <FaCartShopping className="text-lg" /> Add to Cart
-            </button>
+            {data.cart ? (
+              <Link
+                to={`/details/${_id}`}
+                className="btn btn-neutral px-8"
+              >
+                <BiDetail className="text-lg" /> View
+              </Link>
+            ) : (
+              <button
+                className={`btn px-8 ${
+                  data?.cart ? "btn-error" : "btn-outline"
+                }`}
+                onClick={() => handleAddCart(data)}
+              >
+                <FaCartShopping className="text-lg" /> Add to Cart
+              </button>
+            )}
           </div>
         </div>
       </div>

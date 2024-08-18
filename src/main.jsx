@@ -15,13 +15,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
-    loader: () => fetch("https://evo-po-server.vercel.app/product-count"),
+    loader: () => fetch("http://localhost:3000/product-count"),
     errorElement: <div></div>,
   },
   {
     path: "/details/:id",
     loader: ({ params }) =>
-      fetch(`https://evo-po-server.vercel.app/product/${params.id}`, {
+      fetch(`http://localhost:3000/product/${params.id}`, {
         credentials: "include",
       }),
     element: (

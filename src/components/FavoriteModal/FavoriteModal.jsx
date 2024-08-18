@@ -17,7 +17,6 @@ const FavoriteCard = ({ data, refetch }) => {
       `/favorite-delete/?id=${id}&productId=${pro_id}`
     );
     refetch();
-    console.log(res.data);
   };
   return (
     <>
@@ -67,7 +66,6 @@ const FavoriteModal = () => {
     );
     setData(res.data.result);
     setCount(res.data.count);
-    console.log(res);
   }, [axiosSecure, page, user?.email]);
   useEffect(() => {
     fetchData();

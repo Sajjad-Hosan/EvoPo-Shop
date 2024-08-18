@@ -1,16 +1,24 @@
 import { BiDetail } from "react-icons/bi";
 import { CiLocationArrow1 } from "react-icons/ci";
-import { FaRegStar } from "react-icons/fa6";
+import { FaMinus, FaPlus, FaRegStar, FaStar } from "react-icons/fa6";
 import {
   IoCartOutline,
   IoChevronBackOutline,
   IoShareSocial,
 } from "react-icons/io5";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const DetailsPage = () => {
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const today = new Date();
   const data = useLoaderData();
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  const [quentity, setQuentity] = useState(1);
   const {
     _id,
     name,
@@ -22,6 +30,34 @@ const DetailsPage = () => {
     creation_date,
     creation_time,
   } = data;
+  // const handleBuyNow = async(item) => {
+  //   const product = {
+  //     product: {
+  //       ...item,
+  //     },
+  //   };
+  //   //
+  //   // const res = await axiosSecure.post('/')
+  // };
+  const handleFavorite = async (action, item) => {
+    const product = {
+      favo_id: data?._id,
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.displayURL,
+      favorite: action,
+      favorite_date: today.toLocaleDateString(),
+      favorite_time: today.toLocaleTimeString(),
+      item: {
+        ...item,
+        favorite: action,
+      },
+    };
+    // handle favorite action
+    const res = await axiosSecure.post("/favorite-add", product);
+    navigate(0);
+    console.log(res.data);
+  };
   return (
     <div className="flex justify-center items-center lg:h-screen">
       <div className="p-10 md:card flex-col lg:flex-row justify-between items-center md:border lg:w-[1100px] lg:h-[550px]">
@@ -35,19 +71,51 @@ const DetailsPage = () => {
           <img src={image} alt="" className="w-[400px] object-cover" />
         </div>
         <div className="w-full lg:w-1/2 relative h-full">
-          <div className="w-full flex flex-col lg:flex-row items-end lg:items-center justify-center lg:justify-end gap-4">
-            <button
-              className="btn btn-circle btn-ghost btn-sm md:btn-md flex tooltip tooltip-left lg:tooltip-top"
-              data-tip="Favorite"
-            >
-              <FaRegStar className="text-lg" />
-            </button>
-            <button
-              className="btn btn-circle btn-ghost btn-sm md:btn-md flex tooltip tooltip-left lg:tooltip-top"
-              data-tip="Share"
-            >
-              <IoShareSocial className="text-lg" />
-            </button>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-3 items-center">
+              <button
+                className="btn btn-circle btn-ghost"
+                onClick={() => setQuentity((c) => (c <= 1 ? c : c - 1))}
+              >
+                <FaMinus className="text-lg" />
+              </button>
+              <button
+                className="btn btn-circle btn-ghost"
+                onClick={() => setQuentity((c) => (c >= 10 ? c : c + 1))}
+              >
+                <FaPlus className="text-lg" />
+              </button>
+              <div className="btn btn-neutral px-8 hover:bg-none">
+                Product : {quentity <= 9 ? "0" + quentity : quentity}
+              </div>
+            </div>
+            <div className="w-full flex flex-col lg:flex-row items-end lg:items-center justify-center lg:justify-end gap-4">
+              {data?.favorite ? (
+                <button
+                  onClick={() =>
+                    toast.success("Go to Favorite Modal to delete it")
+                  }
+                  className="btn btn-circle btn-ghost btn-sm md:btn-md flex tooltip tooltip-left"
+                  data-tip="unFavorite"
+                >
+                  <FaStar className="text-lg" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleFavorite(true, data)}
+                  className="btn btn-circle btn-sm md:btn-ghost flex tooltip tooltip-left"
+                  data-tip="Favorite"
+                >
+                  <FaRegStar className="text-lg" />
+                </button>
+              )}
+              <button
+                className="btn btn-circle btn-ghost btn-sm md:btn-md flex tooltip tooltip-left lg:tooltip-top"
+                data-tip="Share"
+              >
+                <IoShareSocial className="text-lg" />
+              </button>
+            </div>
           </div>
           <div className="mt-10 p-3">
             <div className="flex justify-between items-center">
@@ -57,10 +125,11 @@ const DetailsPage = () => {
             <p className="mt-5 text-sm font-semibold leading-relaxed">
               {description}
             </p>
-            <div className="flex items-center justify-end gap-6 mt-14">
-              <button className="btn btn-neutral px-8">
+            <div className="flex items-center justify-end gap-3 mt-14">
+              <button className="btn btn-neutral px-8" disabled={data.cart}>
                 <IoCartOutline className="text-lg" /> Add to cart
               </button>
+
               <button className="btn btn-outline px-8">
                 <CiLocationArrow1 className="text-lg" /> Buy now
               </button>
