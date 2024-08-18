@@ -58,7 +58,7 @@ const DetailsPage = () => {
               {description}
             </p>
             <div className="flex items-center justify-end gap-6 mt-14">
-              <button className="btn btn-outline px-8">
+              <button className="btn btn-neutral px-8">
                 <IoCartOutline className="text-lg" /> Add to cart
               </button>
               <button className="btn btn-outline px-8">

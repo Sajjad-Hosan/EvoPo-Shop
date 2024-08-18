@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <a className="btn btn-ghost text-xl">
-            <img src={logo} alt="" className="w-10" /> EcoPo Shop
+            <img src={logo} alt="" className="w-10" /> EvoPo Shop
           </a>
         </div>
         <div className="navbar-center"></div>
