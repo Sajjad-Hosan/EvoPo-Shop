@@ -44,7 +44,6 @@ const BannerCard = ({ data, i }) => {
     };
     const res = await axiosSecure.post("/cart-add", cart);
     navigate(0);
-    console.log(res);
   };
   return (
     <>

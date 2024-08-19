@@ -1,7 +1,6 @@
 import {
   FaPersonWalkingArrowRight,
   FaPersonWalkingDashedLineArrowRight,
-  FaUser,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -10,7 +9,7 @@ import CartDawer from "../CartDawer/CartDawer";
 import logo from "../../../public/log.png";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user ,cartCount} = useAuth();
   return (
     <>
       <div className="navbar bg-base-100">

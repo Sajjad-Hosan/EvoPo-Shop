@@ -17,7 +17,6 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cartCount, setCartCount] = useState(0);
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
         //
         axios
-          .post("http://localhost:3000/jwt", userData, {
+          .post("https://evo-po-server.vercel.app/jwt", userData, {
             withCredentials: true,
           })
           .then((res) => {
@@ -58,8 +57,6 @@ const AuthProvider = ({ children }) => {
     user,
     loading,
     products,
-    cartCount,
-    setCartCount,
     setProducts,
     handleUserLogin,
     handleUserRegister,
@@ -72,5 +69,4 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
 export default AuthProvider;

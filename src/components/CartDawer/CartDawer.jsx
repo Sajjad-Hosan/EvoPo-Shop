@@ -9,7 +9,6 @@ import { CiLocationArrow1 } from "react-icons/ci";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import noProduct from "../../assets/no_data.svg";
 
-
 const DrawerCard = ({ data }) => {
   const axiosSecure = useAxiosSecure();
   const handleRemoveCart = async (id) => {
@@ -46,11 +45,11 @@ const DrawerCard = ({ data }) => {
 };
 
 const CartDawer = () => {
-  const { user, setCartCount } = useAuth();
+  const { user } = useAuth();
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(0);
-  const numberOfpages = Math.ceil(count / 8);
+  const numberOfpages = Math.ceil(count - 1 / 8);
   const axiosSecure = useAxiosSecure();
 
   const fetchData = useCallback(() => {
@@ -59,9 +58,8 @@ const CartDawer = () => {
       .then((res) => {
         setData(res.data?.result);
         setCount(res.data?.count);
-        setCartCount(res.data?.count);
       });
-  }, [axiosSecure, page, user?.email, setCartCount]);
+  }, [axiosSecure, page, user?.email]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -87,7 +85,7 @@ const CartDawer = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge badge-sm indicator-item">0</span>
+              <span className="badge badge-sm indicator-item">{count - 1}</span>
             </div>
           </label>
         </div>
@@ -102,9 +100,9 @@ const CartDawer = () => {
               <FaCartShopping />
               Products
             </h2>
-            {data.length <= 0 ? (
-              <div className="card border my-auto overflow-hidden">
-                <img src={noProduct} alt="" className="pt-1" />
+            {data.length < 0 ? (
+              <div className="card border my-auto overflow-hidden pt-2">
+                <img src={noProduct} alt="" />
               </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-2 my-7 overflow-scroll text-center">
@@ -115,12 +113,13 @@ const CartDawer = () => {
             )}
             <div className="py-5 bg-transparent"></div>
             <div className="absolute left-0 bottom-0 w-full mt-2 flex justify-between items-center py-4 px-4">
-              <button className="btn btn-neutral px-8">
+              <button
+                className="btn btn-neutral px-8"
+                disabled={data.length < 1 ? true : false}
+              >
                 <CiLocationArrow1 className="text-lg" /> Buy now
               </button>
-              {numberOfpages <= 1 ? (
-                ""
-              ) : (
+              {numberOfpages > 2 ? (
                 <div className="flex justify-end items-center join">
                   <button
                     className="btn btn-sm btn-ghost btn-circle join-item flex tooltip tooltip-bottom"
@@ -146,6 +145,8 @@ const CartDawer = () => {
                     <GrFormNextLink className="text-lg" />
                   </button>
                 </div>
+              ) : (
+                ""
               )}
             </div>
           </div>
