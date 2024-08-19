@@ -75,13 +75,9 @@ const DetailsPage = () => {
     console.log(res);
   };
   const handleRemoveCart = async (item) => {
-    const cart = {
-      pro_id: item._id,
-      cart: false,
-    };
-    //
-    const res = await axiosSecure.patch("/cart-remove", cart);
-    console.log(res);
+    const res = await axiosSecure.delete(`/cart-remove/${item._id}`);
+    console.log(res.data);
+    navigate(-1);
   };
   return (
     <div className="flex justify-center items-center lg:h-screen">

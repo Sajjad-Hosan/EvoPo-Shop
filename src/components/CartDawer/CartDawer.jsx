@@ -9,6 +9,11 @@ import { CiLocationArrow1 } from "react-icons/ci";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 
 const DrawerCard = ({ data }) => {
+  const axiosSecure = useAxiosSecure();
+  const handleRemoveCart = async (id) => {
+    const res = await axiosSecure.delete(`/cart-remove/${id}`);
+    console.log(res.data);
+  };
   return (
     <>
       <div className="card border relative p-3 h-[190px]">
@@ -26,6 +31,7 @@ const DrawerCard = ({ data }) => {
             <BiDetail className="text-md" />
           </Link>
           <button
+            onClick={() => handleRemoveCart(data?._id)}
             className="btn btn-sm btn-ghost btn-circle flex tooltip"
             data-tip="Remove"
           >
