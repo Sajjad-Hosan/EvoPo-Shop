@@ -9,7 +9,6 @@ const ProductCard = ({ data, refetch }) => {
   const today = new Date();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  console.log(data);
   const {
     _id,
     name,
@@ -42,12 +41,15 @@ const ProductCard = ({ data, refetch }) => {
   };
   const handleAddCart = async (item) => {
     const cart = {
+      customer_name: user?.displayName,
+      customer_email: user?.email,
+      quantity: 1,
+      total_price: 0,
+      product_id: item?._id,
+      ...item,
+      cart: true,
       cart_add_date: today.toLocaleDateString(),
       cart_add_time: today.toLocaleTimeString(),
-      product: {
-        ...item,
-        cart: true,
-      },
     };
     const res = await axiosSecure.post("/cart-add", cart);
     console.log(res);
@@ -98,17 +100,12 @@ const ProductCard = ({ data, refetch }) => {
           <div className="flex justify-between items-center mt-5 mb-3">
             <h1 className="text-4xl font-semibold">${price}</h1>
             {data.cart ? (
-              <Link
-                to={`/details/${_id}`}
-                className="btn btn-neutral px-8"
-              >
+              <Link to={`/details/${_id}`} className="btn btn-neutral px-8">
                 <BiDetail className="text-lg" /> View
               </Link>
             ) : (
               <button
-                className={`btn px-8 ${
-                  data?.cart ? "btn-error" : "btn-outline"
-                }`}
+                className={`btn px-8 btn-outline`}
                 onClick={() => handleAddCart(data)}
               >
                 <FaCartShopping className="text-lg" /> Add to Cart

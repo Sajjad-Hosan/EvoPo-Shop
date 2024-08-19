@@ -2,6 +2,7 @@ import { BiDetail } from "react-icons/bi";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { FaMinus, FaPlus, FaRegStar, FaStar } from "react-icons/fa6";
 import {
+  IoBagRemoveOutline,
   IoCartOutline,
   IoChevronBackOutline,
   IoShareSocial,
@@ -57,6 +58,30 @@ const DetailsPage = () => {
     const res = await axiosSecure.post("/favorite-add", product);
     navigate(0);
     console.log(res.data);
+  };
+  const handleAddCart = async (item) => {
+    const cart = {
+      customer_name: user?.displayName,
+      customer_email: user?.email,
+      quantity: 1,
+      total_price: 0,
+      product_id: item?._id,
+      ...item,
+      cart: true,
+      cart_add_date: today.toLocaleDateString(),
+      cart_add_time: today.toLocaleTimeString(),
+    };
+    const res = await axiosSecure.post("/cart-add", cart);
+    console.log(res);
+  };
+  const handleRemoveCart = async (item) => {
+    const cart = {
+      pro_id: item._id,
+      cart: false,
+    };
+    //
+    const res = await axiosSecure.patch("/cart-remove", cart);
+    console.log(res);
   };
   return (
     <div className="flex justify-center items-center lg:h-screen">
@@ -126,9 +151,21 @@ const DetailsPage = () => {
               {description}
             </p>
             <div className="flex items-center justify-end gap-3 mt-14">
-              <button className="btn btn-neutral px-8" disabled={data.cart}>
-                <IoCartOutline className="text-lg" /> Add to cart
-              </button>
+              {data.cart ? (
+                <button
+                  className="btn btn-neutral px-8"
+                  onClick={() => handleRemoveCart(data)}
+                >
+                  <IoBagRemoveOutline className="text-lg" /> Remove Product
+                </button>
+              ) : (
+                <button
+                  className="btn btn-neutral px-8"
+                  onClick={() => handleAddCart(data)}
+                >
+                  <IoCartOutline className="text-lg" /> Add to cart
+                </button>
+              )}
 
               <button className="btn btn-outline px-8">
                 <CiLocationArrow1 className="text-lg" /> Buy now

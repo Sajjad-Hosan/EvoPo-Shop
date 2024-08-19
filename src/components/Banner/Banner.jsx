@@ -1,12 +1,51 @@
 import { BiDetail } from "react-icons/bi";
-import { FaCartShopping, FaRegStar } from "react-icons/fa6";
+import { FaCartShopping, FaRegStar, FaStar } from "react-icons/fa6";
 import { IoShareSocial } from "react-icons/io5";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import useAuth from "../../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const BannerCard = ({ data, i }) => {
+  const today = new Date();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  //
+  const handleFavorite = async (action, item) => {
+    const product = {
+      favo_id: data?._id,
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.displayURL,
+      favorite: action,
+      favorite_date: today.toLocaleDateString(),
+      favorite_time: today.toLocaleTimeString(),
+      item: {
+        ...item,
+        favorite: action,
+      },
+    };
+    // handle favorite action
+    const res = await axiosSecure.post("/favorite-add", product);
+    navigate(0);
+    console.log(res.data);
+  };
+  const handleAddCart = async (item) => {
+    const cart = {
+      cart_add_date: today.toLocaleDateString(),
+      cart_add_time: today.toLocaleTimeString(),
+      product: {
+        ...item,
+        cart: true,
+      },
+    };
+    const res = await axiosSecure.post("/cart-add", cart);
+    navigate(0);
+    console.log(res);
+  };
   return (
     <>
       <div id={`slide${i}`} className="carousel-item relative w-full">
@@ -23,19 +62,37 @@ const BannerCard = ({ data, i }) => {
           <p className="text-sm md:text-md my-3">
             {data?.description.slice(0, 102)}
           </p>
-          <div className="flex justify-end items-center gap-5">
-            <button
-              className="btn btn-circle btn-ghost btn-sm flex tooltip"
-              data-tip="Add Cart"
-            >
-              <FaCartShopping className="text-lg" />
-            </button>
-            <button
-              className="btn btn-circle btn-ghost btn-sm flex tooltip"
-              data-tip="Favorite"
-            >
-              <FaRegStar className="text-lg" />
-            </button>
+          <div className="flex justify-end items-center gap-3">
+            {data.cart ? (
+              ""
+            ) : (
+              <button
+                className={`btn btn-ghost btn-circle btn-sm flex tooltip`}
+                onClick={() => handleAddCart(data)}
+                data-tip="Add to Cart"
+              >
+                <FaCartShopping className="text-lg" />
+              </button>
+            )}
+            {data?.favorite ? (
+              <button
+                onClick={() =>
+                  toast.success("Go to Favorite Modal to delete it")
+                }
+                className="btn btn-circle btn-ghost btn-sm md:btn-md flex tooltip"
+                data-tip="unFavorite"
+              >
+                <FaStar className="text-lg" />
+              </button>
+            ) : (
+              <button
+                onClick={() => handleFavorite(true, data)}
+                className="btn btn-circle btn-sm md:btn-ghost flex tooltip"
+                data-tip="Favorite"
+              >
+                <FaRegStar className="text-lg" />
+              </button>
+            )}
             <Link
               to={`/details/${data?._id}`}
               className="btn btn-circle btn-ghost btn-sm flex tooltip"

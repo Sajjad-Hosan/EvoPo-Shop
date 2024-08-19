@@ -1,30 +1,36 @@
 import { BiDetail } from "react-icons/bi";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { useCallback, useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { FaCartShopping } from "react-icons/fa6";
+import { CiLocationArrow1 } from "react-icons/ci";
+import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 
 const DrawerCard = ({ data }) => {
   return (
     <>
-      <div className="card border relative">
+      <div className="card border relative p-3 h-[190px]">
         <img
-          src="https://i.ibb.co/r3Hd2W3/Mountain-Bike.png"
-          alt=""
-          className="w-full object-contain"
+          src={data?.image}
+          alt={data?.name}
+          className="w-[55%] object-contain my-auto mx-auto"
         />
-        <div className="absolute right-2 bottom-2 bg-base-100 p-1">
-          <button
-            className="btn btn-sm btn-ghost btn-circle flex tooltip tooltip-left"
-            data-tip="Remove"
-          >
-            <FaTrashAlt className="text-md" />
-          </button>
+        <div className="flex justify-end gap-2 -mt-5">
           <Link
-            to={`/details/${"00"}`}
-            className="btn btn-circle btn-ghost btn-sm flex tooltip tooltip-left"
+            to={`/details/${data?._id}`}
+            className="btn btn-circle btn-ghost btn-sm flex tooltip"
             data-tip="View"
           >
             <BiDetail className="text-md" />
           </Link>
+          <button
+            className="btn btn-sm btn-ghost btn-circle flex tooltip"
+            data-tip="Remove"
+          >
+            <FaTrashAlt className="text-md" />
+          </button>
         </div>
       </div>
     </>
@@ -32,6 +38,25 @@ const DrawerCard = ({ data }) => {
 };
 
 const CartDawer = () => {
+  const { user, setCartCount } = useAuth();
+  const [data, setData] = useState([]);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const numberOfpages = Math.ceil(count / 8);
+  const axiosSecure = useAxiosSecure();
+
+  const fetchData = useCallback(() => {
+    axiosSecure
+      .post(`/carts?email=${user?.email}&page=${page}&item=${8}`)
+      .then((res) => {
+        setData(res.data?.result);
+        setCount(res.data?.count);
+        setCartCount(res.data?.count);
+      });
+  }, [axiosSecure, page, user?.email, setCartCount]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   return (
     <>
       <div className="drawer w-14">
@@ -64,13 +89,50 @@ const CartDawer = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="p-5 h-full w-96 bg-base-100 card overflow-hidden">
-            <h2 className="text-4xl">My Products</h2>
-            <div className="grid gap-2 mt-7 overflow-scroll text-center">
-              {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, i) => (
+          <div className="p-5 h-full w-96 bg-base-100 card overflow-hidden relative">
+            <h2 className="text-3xl font-semibold flex items-center gap-3">
+              <FaCartShopping />
+              Products
+            </h2>
+            <div className="grid md:grid-cols-2 gap-2 my-7 overflow-scroll text-center">
+              {data.map((item, i) => (
                 <DrawerCard key={i} data={item} />
-              ))} */}
-              <h1 className="text-3xl">Working On it</h1>
+              ))}
+            </div>
+            <div className="py-5 bg-transparent"></div>
+            <div className="absolute left-0 bottom-0 w-full mt-2 flex justify-between items-center py-4 px-4">
+              <button className="btn btn-neutral px-8">
+                <CiLocationArrow1 className="text-lg" /> Buy now
+              </button>
+              {numberOfpages <= 1 ? (
+                ""
+              ) : (
+                <div className="flex justify-end items-center join">
+                  <button
+                    className="btn btn-sm btn-ghost btn-circle join-item flex tooltip tooltip-bottom"
+                    data-tip="Prev"
+                    onClick={() =>
+                      setPage((current) =>
+                        current <= 0 ? current : current - 1
+                      )
+                    }
+                  >
+                    <GrFormPreviousLink className="text-lg" />
+                  </button>
+                  <span className="font-semibold px-3">Page {page}</span>
+                  <button
+                    className="btn btn-sm btn-ghost btn-circle join-item flex tooltip tooltip-bottom"
+                    data-tip="Next"
+                    onClick={() =>
+                      setPage((current) =>
+                        current >= numberOfpages - 1 ? current : current + 1
+                      )
+                    }
+                  >
+                    <GrFormNextLink className="text-lg" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

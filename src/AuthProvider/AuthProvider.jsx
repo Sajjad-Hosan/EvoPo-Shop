@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cartCount, setCartCount] = useState(0);
   const googleProvider = new GoogleAuthProvider();
 
   useEffect(() => {
@@ -57,6 +58,8 @@ const AuthProvider = ({ children }) => {
     user,
     loading,
     products,
+    cartCount,
+    setCartCount,
     setProducts,
     handleUserLogin,
     handleUserRegister,
