@@ -8,7 +8,7 @@ import { MdOutlineFavorite } from "react-icons/md";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-import noProduct from "../../assets/no_product.svg";
+import noProduct from "../../assets/no_data.svg";
 
 const FavoriteCard = ({ data, refetch }) => {
   const axiosSecure = useAxiosSecure();
@@ -117,17 +117,17 @@ const FavoriteModal = () => {
             </div>
           </div>
           <div className="p-5">
-            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
-              {data.length <= 0 ? (
-                <div className="card border p-3">
-                  <img src={noProduct} alt="" />
-                </div>
-              ) : (
-                data.map((item, i) => (
+            {data.length <= 0 ? (
+              <div className="card border w-1/2 mx-auto overflow-hidden pt-2">
+                <img src={noProduct} alt="" className="" />
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {data.map((item, i) => (
                   <FavoriteCard key={i} data={item} refetch={fetchData} />
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </dialog>

@@ -7,6 +7,8 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FaCartShopping } from "react-icons/fa6";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+import noProduct from "../../assets/no_data.svg";
+
 
 const DrawerCard = ({ data }) => {
   const axiosSecure = useAxiosSecure();
@@ -100,11 +102,17 @@ const CartDawer = () => {
               <FaCartShopping />
               Products
             </h2>
-            <div className="grid md:grid-cols-2 gap-2 my-7 overflow-scroll text-center">
-              {data.map((item, i) => (
-                <DrawerCard key={i} data={item} />
-              ))}
-            </div>
+            {data.length <= 0 ? (
+              <div className="card border my-auto overflow-hidden">
+                <img src={noProduct} alt="" className="pt-1" />
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-2 my-7 overflow-scroll text-center">
+                {data.map((item, i) => (
+                  <DrawerCard key={i} data={item} />
+                ))}
+              </div>
+            )}
             <div className="py-5 bg-transparent"></div>
             <div className="absolute left-0 bottom-0 w-full mt-2 flex justify-between items-center py-4 px-4">
               <button className="btn btn-neutral px-8">
